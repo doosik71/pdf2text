@@ -1,0 +1,21 @@
+{
+  "name": "pdf2text",
+  "version": "1.0.0",
+  "description": "Extract text from pdf file.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "PDF"
+  ],
+  "author": "Doosik Kim",
+  "license": "ISC",
+  "bin": {
+    "pdf2text": "app.js"
+  },
+  "dependencies": {
+    "copy-paste": "^1.5.3",
+    "pdf-parse": "^1.1.1"
+  }
+}
