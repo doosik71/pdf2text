@@ -1,49 +1,39 @@
 // app.js
 const express = require('express');
 const pdf = require('pdf-parse');
+const multer = require('multer');
+const path = require('path');
 
 const app = express();
 const port = 3000;
-const html = `
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-top: 2em;
-            }
-            #url {
-              width: 40em;
-            }
-          </style>
-        <title>PDF2Text</title>
-    </head>
-    <body>
-        <form action="/pdf" method="get">
-            <label for="url">PDF URL:</label>
-            <input type="url" id="url" name="url" spellcheck="false"placeholder="Input PDF url here!" required>
-            <button type="submit">Submit</button>
-            <p>PDF example: <a href="pdf?url=https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf">https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf</a></p>
-        </form>
-    </body>
-</html>
-`;
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Define a route
 app.get('/', (req, res) => {
-  res.send(html);
+  res.render('index');
 });
 
 // Handle the GET request with query parameters
-app.get('/pdf', async (req, res) => {
+app.get('/url', async (req, res) => {
   const pdfUrl = req.query.url;
   const extractedText = await extractTextFromPdf(pdfUrl);
-  res.send(extractedText);
+  res.send('<pre>\n' + extractedText + '\n</pre>');
+});
+
+// Handle the GET request with query parameters
+app.post('/file', upload.single('file'), async (req, res) => {
+  try {
+    const extractedText = await pdf(req.file.buffer);
+    res.send('<pre>\n' + extractedText.text + '\n</pre>');
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // Start the server

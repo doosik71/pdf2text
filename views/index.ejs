@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 2em;
+                font-size: 120%;
+            }
+            .container {
+              text-align: center;
+            }
+            .card {
+                margin: 1em;
+                padding: 1em;
+                text-align: left;
+                border: 2px solid lightgray;
+                border-radius: 10px;
+            }
+            input {
+                width: 40em;
+            }
+          </style>
+        <title>PDF2Text</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="card">
+                <form action="/url" method="get">
+                    <label for="url">PDF URL:</label>
+                    <input type="url" id="url" name="url" spellcheck="false" placeholder="Input PDF url here!" required>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="card">
+                <form action="/file" method="post" enctype="multipart/form-data">
+                    <label for="file">PDF File:&nbsp;&nbsp;</label>
+                    <input type="file" id="file" name="file" spellcheck="false" placeholder="Input PDF file path here!" accept=".pdf" required>&nbsp;
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
